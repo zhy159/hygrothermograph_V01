@@ -1,0 +1,86 @@
+C51 COMPILER V9.01   ADC_INIT                                                              01/28/2021 14:50:10 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE ADC_INIT
+OBJECT MODULE PLACED IN .\Objects\ADC_Init.obj
+COMPILER INVOKED BY: D:\Program Files\keil 4\C51\BIN\C51.EXE c\ADC_Init.c BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\ADC
+                    -_Init.lst) OBJECT(.\Objects\ADC_Init.obj)
+
+line level    source
+
+   1          #include "H/Function_Init.H"
+   2          
+   3          void ADC_Init(uint Channel);
+   4          unsigned int ADCValue = 0x0000;
+   5          bit AdcFlag = 0;
+   6          
+   7          /***********ADC采样口选择*************/
+   8          #if (IC_MODEL == SC95F7617 || IC_MODEL == SC95F7616)
+   9                  enum Channel {AIN0=0,AIN1,AIN2,AIN3,AIN4,AIN5,AIN6,AIN7,AIN8,AIN9,AIN10,AIN11,AIN12,AIN13,AIN14,AIN15,VDD
+             -4=31};
+  10          #endif
+  11          
+  12          #if (IC_MODEL == SC95F7615 || IC_MODEL == SC95F7613)
+              enum Channel {AIN4=4,AIN5,AIN6,AIN7,AIN12=12,AIN13,AIN14,AIN15,VDD4=31};
+              #endif
+  15                  
+  16          /*****************************************************
+  17          *函数名称：void ADC_Test(void)
+  18          *函数功能：ADC测试
+  19          *入口参数：void
+  20          *出口参数：void
+  21          *****************************************************/
+  22          void ADC_Test(void)
+  23          {
+  24   1              ADC_Init(AIN4);
+  25   1              while(1)
+  26   1              {
+  27   2                      ADCCON |= 0X40;   //开始ADC转换
+  28   2                      while(!AdcFlag);                                 //等待 ADC转换完成;
+  29   2                      AdcFlag = 0;
+  30   2                      ADCValue = (ADCVH<<4)+(ADCVL>>4);
+  31   2              }
+  32   1      }
+  33          /*****************************************************
+  34          *函数名称：void ADC_Init(uint Channel)
+  35          *函数功能：ADC初始化
+  36          *入口参数：Channel
+  37          *出口参数：void
+  38          *****************************************************/
+  39          void ADC_Init(uint Channel)
+  40          {
+  41   1              ADCCON = 0X80|Channel;          //开启ADC，ADC采样频率为2M ,选择Channel位ADC采样口
+  42   1              if(Channel<8)
+  43   1              {
+  44   2                      ADCCFG0 = 1<<Channel;   //设置Channel作为采样口
+  45   2              }
+  46   1              else
+  47   1              {
+  48   2                      ADCCFG1 = 1<<(Channel-8);   //设置Channel作为采样口
+  49   2              }
+  50   1              IE |= 0X40;        //开启ADC中断
+  51   1              EA = 1;
+  52   1      }
+  53          
+C51 COMPILER V9.01   ADC_INIT                                                              01/28/2021 14:50:10 PAGE 2   
+
+  54          
+  55          void ADC_Interrupt(void) interrupt 6
+  56          {
+  57   1              ADCCON &= ~(0X20);  //清中断标志位
+  58   1              AdcFlag = 1;
+  59   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     99    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,9 @@
+".\Objects\main.obj",
+".\Objects\IO_Init.obj",
+".\Objects\SSI2_Init.obj",
+".\Objects\Timer_Init.obj",
+".\Objects\Uart_Init.obj",
+".\Objects\Tuya.obj",
+".\Objects\OLED.obj" 
+TO ".\Objects\Demo" 
+PRINT(".\Listings\Demo.m51") RAMSIZE(256) 

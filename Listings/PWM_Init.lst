@@ -1,0 +1,114 @@
+C51 COMPILER V9.01   PWM_INIT                                                              01/28/2021 13:33:37 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE PWM_INIT
+OBJECT MODULE PLACED IN .\Objects\PWM_Init.obj
+COMPILER INVOKED BY: D:\Program Files\keil 4\C51\BIN\C51.EXE c\PWM_Init.c BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\PWM
+                    -_Init.lst) OBJECT(.\Objects\PWM_Init.obj)
+
+line level    source
+
+   1          #include "H/Function_Init.H"
+   2          
+   3          #if (IC_MODEL == SC95F7617 || IC_MODEL == SC95F7616 || IC_MODEL == SC95F7615)
+   4          unsigned int xdata PWMRD_40  _at_  0x1040;
+   5          unsigned int xdata PWMRD_41  _at_  0x1042;
+   6          unsigned int xdata PWMRD_42  _at_  0x1044;
+   7          unsigned int xdata PWMRD_43  _at_  0x1046;
+   8          unsigned int xdata PWMRD_50  _at_  0x1048;
+   9          unsigned int xdata PWMRD_51  _at_  0x104A;
+  10          unsigned int xdata PWMRD_52  _at_  0x104C;
+  11          unsigned int xdata PWMRD_53  _at_  0x104E;
+  12          #endif
+  13          
+  14          #if (IC_MODEL == SC95F7613)
+              unsigned int xdata PWMRD_40  _at_  0x1040;
+              unsigned int xdata PWMRD_41  _at_  0x1042;
+              unsigned int xdata PWMRD_42  _at_  0x1044;
+              unsigned int xdata PWMRD_43  _at_  0x1046;
+              #endif
+  20          
+  21          unsigned int xdata PWMRD_Temp;
+  22          void PWM_Init(void);
+  23          /*****************************************************
+  24          *函数名称：void PWM_Test(void)
+  25          *函数功能：PWM测试
+  26          *入口参数：void
+  27          *出口参数：void
+  28          *****************************************************/
+  29          void PWM_Test(void)
+  30          {
+  31   1              PWM_Init();
+  32   1              while(1)
+  33   1              {
+  34   2              }
+  35   1      }
+  36          
+  37          /*****************************************************
+  38          *函数名称：void PWM_Init(void)
+  39          *函数功能：PWM独立模式初始化
+  40          *入口参数：void
+  41          *出口参数：void
+  42          *****************************************************/
+  43          void PWM_Init(void)
+  44          {
+  45   1              //设置了周期为50us，占空比为50%的PWM波形
+  46   1          PWMMOD = 0x00;           //独立模式，边沿对齐
+  47   1              PWMCON = 0x3F;           //周期设置低8位,50us
+  48   1          PWMCFG = 0x86;           //7:开关  5-4：时钟源选择  3-0：周期设置高4位      
+  49   1              PWMRD_41 = 0x8000 | 0x320;     //开启PWM口，设置占空比
+  50   1          IE1 |= 0x02;        //开启中断标志位
+  51   1          EA = 1;
+  52   1      }
+  53          
+  54          /*****************************************************
+C51 COMPILER V9.01   PWM_INIT                                                              01/28/2021 13:33:37 PAGE 2   
+
+  55          *函数名称：void PWM_Init(void)
+  56          *函数功能：PWM互补模式初始化
+  57          *入口参数：void
+  58          *出口参数：void
+  59          *****************************************************
+  60          void PWM_Init(void)
+  61          {
+  62                  //设置了周期为50us，占空比为50%的PWM波形
+  63              PWMMOD = 0x0C;           //互补模式，中心对齐
+  64                  PWMCON = 0x3F;           //周期设置低8位,50us
+  65              PWMCFG = 0x86;           //7:开关  5-4：时钟源选择  3-0：周期设置高4位      
+  66                  PWMRD_40 = 0x8000 | 0x320;     //开启PWM40口，设置占空比
+  67              PWMRD_41 = 0xC000 ;            //开启PWM41口，输出反向
+  68              PWMDFR = 0x88;                 //设置上升沿死区时间：4*PWMDFR[3:0]/fHRC  设置下降沿死区时间：4*PWMDFR[
+             -7:4]/fHRC
+  69              IE1 |= 0x02;        //开启中断标志位
+  70              EA = 1;
+  71          }
+  72          */
+  73          
+  74          /*****************************************************
+  75          *函数名称：void PWM_Interrup() interrupt 8
+  76          *函数功能：PWM中断服务函数
+  77          *入口参数：void
+  78          *出口参数：void
+  79          *****************************************************/
+  80          void PWM_Interrup() interrupt 8
+  81          {
+  82   1          if(PWMCFG & 0x40)
+  83   1          {
+  84   2              PWMCFG &= ~0x40;  //清除中断标志位
+  85   2              P04 = ~P04;       
+  86   2          }
+  87   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     45    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =      2    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

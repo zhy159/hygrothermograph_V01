@@ -1,0 +1,129 @@
+C51 COMPILER V9.01   CRC_INIT                                                              01/28/2021 14:50:59 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE CRC_INIT
+OBJECT MODULE PLACED IN .\Objects\CRC_Init.obj
+COMPILER INVOKED BY: D:\Program Files\keil 4\C51\BIN\C51.EXE c\CRC_Init.c BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\CRC
+                    -_Init.lst) OBJECT(.\Objects\CRC_Init.obj)
+
+line level    source
+
+   1          #include "H/Function_Init.H"
+   2          
+   3          char Array[] = {0x00,0x11,0x22,0x33,0x44,0x55,0x66,0x77,0x88,0x99,0xaa,0xbb,0xcc,0xdd,0xee,0xff};
+   4          typedef struct
+   5          {
+   6              char a3;        //高位地址
+   7              char a2;        //次高地址
+   8              char a1;        //次低地址
+   9              char a0;        //低位地址
+  10          }Value_Typedef;    
+  11          typedef union
+  12          {
+  13              Value_Typedef reg; 
+  14              unsigned long int result;  //最终结果
+  15          }Result_Typedef;
+  16          
+  17          unsigned long int temp = 0x00;  //最终结果
+  18          Result_Typedef CRC_Result;
+  19          
+  20          void CRC_Hardware_Init(void);
+  21          void CRC_Software_Init(char array[]);
+  22          
+  23          /*****************************************************
+  24          *函数名称：void CRC_Test(void)
+  25          *函数功能：CRC测试
+  26          *入口参数：void
+  27          *出口参数：void
+  28          *****************************************************/
+  29          void CRC_Test(void)
+  30          {
+  31   1          //硬件校验
+  32   1          CRC_Hardware_Init();
+  33   1          //软件校验
+  34   1          CRC_Software_Init(Array);
+  35   1      }
+  36          
+  37          /*****************************************************
+  38          *函数名称：void CRC_Hardware_Init(void)
+  39          *函数功能：CRC硬件校验初始化
+  40          *入口参数：void
+  41          *出口参数：void
+  42          *****************************************************/
+  43          void CRC_Hardware_Init(void)
+  44          {
+  45   1          OPERCON |= 0x01;  //启动硬件校验
+  46   1          _nop_();
+  47   1          _nop_();
+  48   1          _nop_();
+  49   1          _nop_();
+  50   1          _nop_();
+  51   1          _nop_();
+  52   1          _nop_();
+  53   1          _nop_();
+  54   1      
+C51 COMPILER V9.01   CRC_INIT                                                              01/28/2021 14:50:59 PAGE 2   
+
+  55   1          CRCINX = 0x00;
+  56   1          CRC_Result.reg.a0 = CRCREG;   //低两byte结果存放
+  57   1          CRC_Result.reg.a1 = CRCREG;   //次低两byte结果存放
+  58   1          CRC_Result.reg.a2 = CRCREG;   //次高两byte结果存放
+  59   1          CRC_Result.reg.a3 = CRCREG;   //高两byte结果存放
+  60   1          temp = CRC_Result.result;     //最终运算结果
+  61   1      }
+  62          
+  63          /*****************************************************
+  64          *函数名称：void CRC_Software_Init(char array[])
+  65          *函数功能：CRC软件校验初始化
+  66          *入口参数：void
+  67          *出口参数：void
+  68          *****************************************************/
+  69          void CRC_Software_Init(char array[])
+  70          {
+  71   1          int i = 0;
+  72   1          OPERCON |= 0x02;             //启动软件校验
+  73   1          _nop_();
+  74   1          _nop_();
+  75   1          _nop_();
+  76   1          _nop_();
+  77   1          _nop_();
+  78   1          _nop_();
+  79   1          _nop_();
+  80   1          _nop_();
+  81   1          _nop_();
+  82   1          _nop_();  
+  83   1          for(i=0; i<16; i++)      //校验范围
+  84   1          {
+  85   2              CRCREG = array[i];   //把要校验的地址值放到寄存器
+  86   2              _nop_();
+  87   2              _nop_();
+  88   2              _nop_();
+  89   2              _nop_();
+  90   2              _nop_();
+  91   2              _nop_();
+  92   2              _nop_();
+  93   2              _nop_();
+  94   2              _nop_();
+  95   2              _nop_();            
+  96   2          }
+  97   1          CRCINX = 0x00;
+  98   1          CRC_Result.reg.a0 = CRCREG;   //低两byte结果存放
+  99   1          CRC_Result.reg.a1 = CRCREG;   //次低两byte结果存放
+ 100   1          CRC_Result.reg.a2 = CRCREG;   //次高两byte结果存放
+ 101   1          CRC_Result.reg.a3 = CRCREG;   //高两byte结果存放
+ 102   1          temp = CRC_Result.result;     //最终运算结果
+ 103   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    145    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     24       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

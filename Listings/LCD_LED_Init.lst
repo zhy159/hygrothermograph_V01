@@ -1,0 +1,96 @@
+C51 COMPILER V9.01   LCD_LED_INIT                                                          01/28/2021 14:50:31 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE LCD_LED_INIT
+OBJECT MODULE PLACED IN .\Objects\LCD_LED_Init.obj
+COMPILER INVOKED BY: D:\Program Files\keil 4\C51\BIN\C51.EXE c\LCD_LED_Init.c BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings
+                    -\LCD_LED_Init.lst) OBJECT(.\Objects\LCD_LED_Init.obj)
+
+line level    source
+
+   1          #include "H/Function_Init.H"
+   2          
+   3          unsigned char xdata LCDRAM[28]  _at_  0x1000;
+   4          void LCD_Init(void);
+   5          void LED_Init(void);
+   6          void PxVO_Init(void);
+   7                  
+   8          /*****************************************************
+   9          *函数名称：void LCD_Test(void)
+  10          *函数功能：LCD/LED测试
+  11          *入口参数：void
+  12          *出口参数：void
+  13          *****************************************************/
+  14          void LCD_LED_Test(void)
+  15          {
+  16   1              LCD_Init();
+  17   1      //      LED_Init();
+  18   1              while(1)
+  19   1              {
+  20   2              }
+  21   1      }
+  22          /*****************************************************
+  23          *函数名称：void LCD_Init(void)
+  24          *函数功能：LCD初始化
+  25          *入口参数：void
+  26          *出口参数：void
+  27          *****************************************************/
+  28          void LCD_Init(void)
+  29          {
+  30   1              unsigned int i;
+  31   1              DDRCON = 0x8F;    //-xyy zzzz  x:LCD/LED模式 y:占空比  z:LCD电压调节
+  32   1              PxVO_Init();
+  33   1              OTCON |= 0x04;    //---- xxyz  x:LCD分压电阻 y:复位管脚选择 z:LCD偏置电压
+  34   1              for(i=0; i<8; i++)
+  35   1              {
+  36   2                      LCDRAM[i] = 0xff;
+  37   2              }
+  38   1      }
+  39          
+  40          /*****************************************************
+  41          *函数名称：void LED_Init(void)
+  42          *函数功能：LED初始化
+  43          *入口参数：void
+  44          *出口参数：void
+  45          *****************************************************/
+  46          void LED_Init(void)
+  47          {
+  48   1              unsigned int i;
+  49   1              DDRCON = 0xC0;    //-xyy zzzz  x:LCD/LED模式 y:占空比1/8:00 1/6:01 1/5:10 1/4:11  z:LCD电压调节
+  50   1              PxVO_Init();
+  51   1              OTCON |= 0x00;    //---- xxyz  x:LCD分压电阻 y:复位管脚选择 z:LCD偏置电压
+  52   1              for(i=0; i<8; i++)
+  53   1              {
+  54   2                      LCDRAM[i] = 0xff;
+C51 COMPILER V9.01   LCD_LED_INIT                                                          01/28/2021 14:50:31 PAGE 2   
+
+  55   2              }
+  56   1      }
+  57          
+  58          /*****************************************************
+  59          *函数名称：void PxVO_Init(void)
+  60          *函数功能：显示驱动输出口初始化
+  61          *入口参数：void
+  62          *出口参数：void
+  63          *****************************************************/
+  64          void PxVO_Init(void)
+  65          {
+  66   1              P0VO = 0xFF;
+  67   1              P1VO = 0xFF;
+  68   1              P2VO = 0xFF;
+  69   1              P3VO = 0xFF;
+  70   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     61    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

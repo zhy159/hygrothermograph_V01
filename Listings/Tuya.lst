@@ -1,0 +1,219 @@
+C51 COMPILER V9.01   TUYA                                                                  02/22/2021 14:14:38 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE TUYA
+OBJECT MODULE PLACED IN .\Objects\Tuya.obj
+COMPILER INVOKED BY: D:\Program Files\keil 4\C51\BIN\C51.EXE c\Tuya.c LARGE OPTIMIZE(7,SPEED) BROWSE DEBUG OBJECTEXTEND 
+                    -PRINT(.\Listings\Tuya.lst) OBJECT(.\Objects\Tuya.obj)
+
+line level    source
+
+   1          #include "H/Function_Init.H" 
+   2          
+   3          void Uart_SendOut(uchar Uart_data);  //´®¿Ú·¢ËÍº¯Êý
+   4          uchar tuya_DataTab1[2];   //½ÓÊÕµ½µÄÊý¾Ý´æ·Å±í¸ñ,×î¶à15¸ö
+   5          uchar jyh_temp;
+   6          uchar Uart_data1;//¶¨ÒåÁ½¸öÖ¡Í·Ê¶±ðµÄ±äÁ¿
+   7          uchar a_ls;     
+   8          uchar sd_ztxh;    //¶¨ÒåÊÕµ½µÄ×´Ì¬ÐòºÅ±äÁ¿ 
+   9          
+  10          void Uart_sxt(void)     //ÊÕµ½Ê×ÐÄÌø»Ø¸´55 AA 03 00 00 01 00 03  7Î»Êý¾Ý+Ð£Ñé
+  11          {                                          
+  12   1       uchar a_Ls;    
+  13   1       uchar uart_tab[]={0x55,0xAA,0x03,0x00,0x00,0x01,0x00,0x03};                                                                                                                                    
+  14   1      
+  15   1              for(a_Ls=0;a_Ls<=7;a_Ls++)              //·¢ËÍ×Ö½ÚÊýÁ¿-1
+  16   1              {
+  17   2              Uart_SendOut(uart_tab[a_Ls]);
+  18   2              } 
+  19   1      }  
+  20          void Uart_hxt(void)     //ÊÕÒ»´ÎÒÔÉÏÐÄÌø»Ø¸´ 7Î»Êý¾Ý+Ð£Ñé 0x55,0xAA,0x03,0x00,0x00,0x01,0x01,0x4
+  21          {                                          
+  22   1      uchar a_Ls;     
+  23   1       uchar uart_tab[]={0x55,0xAA,0x03,0x00,0x00,0x01,0x01,0x04};                                                                                                                                    
+  24   1      
+  25   1              for(a_Ls=0;a_Ls<=7;a_Ls++) //·¢ËÍ×Ö½ÚÊýÁ¿-1
+  26   1              {
+  27   2              Uart_SendOut(uart_tab[a_Ls]);
+  28   2              }  
+  29   1      }
+  30          
+  31          void Uart_xtxx(void)//MCUÉÏ±¨ID MCU°æ±¾ ÅäÍø·½Ê½        ,ÏµÍ³ÐÅÏ¢       *********************************************
+  32          { 
+  33   1      uchar a_Ls;     
+  34   1       uchar uart_tab[]={
+  35   1      0x55,0xAA,0x03,0x01,0x00,0x2A,0x7B,0x22,0x70,0x22,0x3A,0x22,0x6C,0x71,0x6B,0x76,0x67,0x65,0x61,0x64,0x7A,       
+             -        
+  36   1      0x30,0x7A,0x63,0x6A,0x6E,0x38,0x66,0x22,0x2C,0x22,0x76,0x22,0x3A,0x22,0x31,0x2E,0x30,0x2E,0x30,0x22,0x2C,0
+             -x22,        
+  37   1      0x6D,0x22,0x3A,0x30,0x7D,0x3B}; 
+  38   1              for(a_Ls=0;a_Ls<=48;a_Ls++)
+  39   1              {
+  40   2              Uart_SendOut(uart_tab[a_Ls]);
+  41   2              }
+  42   1      }
+  43          
+  44          
+  45          void Uart_xtmk(void)//»Ø¸´ÎªMCUÉÏ±¨ÓëÄ£¿éÅäºÏ´¦Àí       *********************************************
+  46          {                                          //55 AA 03 02 00 00 04
+  47   1      uchar a_Ls;     
+  48   1       uchar uart_tab[]={0x55,0xAA,0x03,0x02,0x00,0x00,0x04};                                                                                                                                 
+  49   1      
+  50   1              for(a_Ls=0;a_Ls<=6;a_Ls++)         //·¢ËÍ×Ö½ÚÊýÁ¿-1
+  51   1              {
+  52   2              Uart_SendOut(uart_tab[a_Ls]);
+C51 COMPILER V9.01   TUYA                                                                  02/22/2021 14:14:38 PAGE 2   
+
+  53   2              }
+  54   1      }
+  55          
+  56          
+  57          void Uart_wififf(void)//Ä£¿é±¨¸æWiFi ¹¤×÷×´Ì¬ÊÕµ½ºóMCU»Ø¸´      *********************************************
+  58          {                                               //55 AA 03 03 00 00 05
+  59   1              uchar a_Ls;     
+  60   1              uchar uart_tab[]={0x55,0xAA,0x03,0x03,0x00,0x00,0x05};                                                                                                                                  
+  61   1      
+  62   1              for(a_Ls=0;a_Ls<=6;a_Ls++)         //·¢ËÍ×Ö½ÚÊýÁ¿-1
+  63   1              {
+  64   2              Uart_SendOut(uart_tab[a_Ls]);
+  65   2              } 
+  66   1      }
+  67          void Uart_temp_up(void) //ÉÏ´«ÎÂ¶È***************************************************************
+  68          { 
+  69   1                              
+  70   1              if(fs_temp)                                                                                              //¸ºÊý±êÖ¾Î»ÖÃÎ»ÁË,Ò²¾ÍÊÇÎÂ¶ÈÊÇ¸ºµÄ
+  71   1              {
+  72   2                      uchar a_Ls;
+  73   2                      uchar uart_tab[]={0x55,0xAA,0x03,0x07,0x00,0x08,0x01,0x02,0x00,0x04,0xFF,0xFF,};        //12Î»ºó»¹ÓÐÁ½Î»ÎÂ¶ÈÖµ+
+             -Ð£ÑéºÍ
+  74   2                      jyh_temp=(temp_L+temp_H+0X55+0XAA+0X03+0X07+0X08+0X01+0X02+0X04+0XFF+0XFF);                     //¼ÆËãÐ£ÑéºÍ,ÓÃucharÏà¼ÓÖ»
+             -»áµÃ256ÒÔÏÂµÄÊý¸ßÎ»¶ªÆú
+  75   2                      uart_tab[12]=temp_H;uart_tab[13]=temp_L;uart_tab[14]=jyh_temp;                                          //ÎÂ¶È¸ßµÍÎ»¼°Ð£ÑéÎ»´æÈë·¢ËÍµÄ±í¸ñ              
+             -                                                                                                        
+  76   2                      for(a_Ls=0;a_Ls<=14;a_Ls++)        //·¢ËÍ×Ö½ÚÊýÁ¿-1
+  77   2                      {
+  78   3                      Uart_SendOut(uart_tab[a_Ls]);
+  79   3                      }
+  80   2              } 
+  81   1              else                                                                                              //ÎÂ¶ÈÊÇÕýµÄ
+  82   1              {
+  83   2                      
+  84   2                      uchar a_Ls;
+  85   2                      uchar uart_tab[]={0x55,0xAA,0x03,0x07,0x00,0x08,0x01,0x02,0x00,0x04,0x00,0x00}; //12Î»ºó»¹ÓÐÁ½Î»ÎÂ¶ÈÖµ+Ð
+             -£ÑéºÍ
+  86   2                      jyh_temp=(temp_L+temp_H+0X55+0XAA+0X03+0X07+0X08+0X01+0X02+0X04);                               //¼ÆËãÐ£ÑéºÍ,ÓÃucharÏà¼ÓÖ»»áµÃ256ÒÔ
+             -ÏÂµÄÊý¸ßÎ»¶ªÆú
+  87   2                      uart_tab[12]=temp_H;uart_tab[13]=temp_L;uart_tab[14]=jyh_temp;                                  //ÎÂ¶È¸ßµÍÎ»¼°Ð£ÑéÎ»´æÈë·¢ËÍµÄ±í¸ñ                      
+             -                                                                                                
+  88   2              
+  89   2                      for(a_Ls=0;a_Ls<=14;a_Ls++)        //·¢ËÍ×Ö½ÚÊýÁ¿-1
+  90   2                      {
+  91   3                      Uart_SendOut(uart_tab[a_Ls]);
+  92   3                      }       
+  93   2      
+  94   2      
+  95   2              
+  96   2              }  //*/
+  97   1      }
+  98                   
+  99          
+ 100          
+ 101          void Uart_humid_up(void)        //ÉÏ´«Êª¶È **********************************************************************
+             -****
+ 102          { 
+ 103   1              uchar a_Ls;     
+ 104   1              uchar uart_tab[]={0x55,0xAA,0x03,0x07,0x00,0x08,0x02,0x02,0x00,0x04,0x00,0x00,0x00};    //13Î»ºó»¹ÓÐÁ½Î»ÎÂ¶È
+             -Öµ+Ð£ÑéºÍ
+ 105   1              jyh_temp=(humid_z+0X55+0XAA+0X03+0X07+0X08+0X02+0X02+0X04);                                                             //¼ÆËãÐ£ÑéºÍ,ÓÃucharÏà¼ÓÖ»»áµÃ256ÒÔÏÂµ
+             -ÄÊý¸ßÎ»¶ªÆú
+C51 COMPILER V9.01   TUYA                                                                  02/22/2021 14:14:38 PAGE 3   
+
+ 106   1              uart_tab[13]=humid_z;uart_tab[14]=jyh_temp;                                                                                             //Êª¶È¼°Ð£ÑéÎ»´æÈë·¢ËÍµÄ±í¸ñ
+ 107   1              for(a_Ls=0;a_Ls<=14;a_Ls++)        //·¢ËÍ×Ö½ÚÊýÁ¿-1
+ 108   1              {
+ 109   2              Uart_SendOut(uart_tab[a_Ls]);
+ 110   2              }
+ 111   1      }
+ 112          
+ 113          void tuya_sjcl(void)//Í¿Ñ»Êý¾Ý´¦Àí½ÓÊÕº¯Êý******************************
+ 114          {
+ 115   1                              
+ 116   1                      UartReceiveFlag = 0;    //½ÓÊÕ±êÖ¾Î» Çå0,¿ÉÒÔ½ÓÊÕÏÂ¸öÊý¾Ý
+ 117   1                      tuya_DataTab1[1]=tuya_DataTab1[0];
+ 118   1                      tuya_DataTab1[0]=Uart_data;
+ 119   1                      if((tuya_DataTab1[1]==0x55)&&(tuya_DataTab1[0]==0xAA))   //ÊÕµ½55AAÎªÖ¡Í·,·Åµ½Ö¡Í·µÄÎ»ÖÃ
+ 120   1                      {
+ 121   2                               tuya_DataTab[0]=tuya_DataTab1[1];
+ 122   2                               tuya_DataTab[1]=tuya_DataTab1[0];
+ 123   2                               Uart_data1=(tuya_DataTab[1]+tuya_DataTab[0]);
+ 124   2                               a_ls=2;                
+ 125   2                      }
+ 126   1                      else
+ 127   1                      {                       
+ 128   2                        if((a_ls>1)&&(a_ls<15))                                        //×î¶à¿É·Å15¸öucherµÄÊý¾Ý
+ 129   2                        {                             
+ 130   3                              tuya_DataTab[a_ls]=tuya_DataTab1[0];                    //
+ 131   3                              a_ls++;
+ 132   3                        }
+ 133   2                        else
+ 134   2                        {
+ 135   3                              a_ls=0;
+ 136   3                        }             
+ 137   2                      } 
+ 138   1      }
+ 139           void Uart_SendOut(uchar Uart_data)  //´®¿Ú·¢ËÍº¯Êý
+ 140           {
+ 141   1                      SBUF = Uart_data;                  //                                              1
+ 142   1                      while(!UartSendFlag);  //µÈ´ý·¢ËÍÍê³É±êÖ¾Î» ÖÃ1
+ 143   1                      UartSendFlag = 0;
+ 144   1      }
+ 145          
+ 146          //*******************************ÊÕµ½µÄÊý¾ÝÅÐ¶Ïº¯Êý**************************
+ 147          uchar jszl_qf(void)
+ 148          {
+ 149   1              if((tuya_DataTab[0]==0x55)&&(tuya_DataTab[1]==0xaa)&&(tuya_DataTab[2]==0x00)&&(tuya_DataTab[3]==0x00)&&
+ 150   1                      (tuya_DataTab[4]==0x00)&&(tuya_DataTab[5]==0x00)&&(tuya_DataTab[6]==0xff))//55 AA 00 00 00 00 FF 
+ 151   1                      { sd_ztxh=1;  tuya_DataTab[6]=0x55;/*·ÀÖ¹ÖØ¸´´ð¸´//*/ }                                 //ÊÕµ½Ê×´Î»ò·ÇÊ×´ÎÐÄÌø£¬MCUÏàÓ¦»Ø¸´             
+ 152   1              if((tuya_DataTab[0]==0x55)&&(tuya_DataTab[1]==0xaa)&&(tuya_DataTab[2]==0x00)&&(tuya_DataTab[3]==0x01)&&
+ 153   1                      (tuya_DataTab[4]==0x00)&&(tuya_DataTab[5]==0x00)&&(tuya_DataTab[6]==0x00))
+ 154   1                      { sd_ztxh=2;}                                                                                                                   //MCUÉÏ±¨ID MCU°æ±¾ ÅäÍø·½Ê½,ÏµÍ³ÐÅÏ¢
+ 155   1              if((tuya_DataTab[0]==0x55)&&(tuya_DataTab[1]==0xaa)&&(tuya_DataTab[2]==0x00)&&(tuya_DataTab[3]==0x02)&&
+ 156   1              (tuya_DataTab[4]==0x00)&&(tuya_DataTab[5]==0x00)&&(tuya_DataTab[6]==0x01))
+ 157   1                      {sd_ztxh=3;     tuya_DataTab[6]=0x55;/*·ÀÖ¹ÖØ¸´´ð¸´//*/ }                                       //»Ø¸´MCUÉÏ±¨ÓëÄ£¿éÅäºÏ´¦Àí
+ 158   1              if((tuya_DataTab[0]==0x55)&&(tuya_DataTab[1]==0xaa)&&(tuya_DataTab[2]==0x00)&&(tuya_DataTab[3]==0x03)&&
+ 159   1              (tuya_DataTab[4]==0x00)&&(tuya_DataTab[5]==0x01)&&(tuya_DataTab[6]==0x00)&&(tuya_DataTab[7]==0x03))
+ 160   1                      {sd_ztxh=4;     tuya_DataTab[6]=0x55;/*·ÀÖ¹ÖØ¸´´ð¸´//*/ }                                       //wifiÁ¬Íø×´Ì¬ÎªSmartconfigÅäÍø
+ 161   1              if((tuya_DataTab[0]==0x55)&&(tuya_DataTab[1]==0xaa)&&(tuya_DataTab[2]==0x00)&&(tuya_DataTab[3]==0x03)&&
+ 162   1              (tuya_DataTab[4]==0x00)&&(tuya_DataTab[5]==0x01)&&(tuya_DataTab[6]==0x01)&&(tuya_DataTab[7]==0x04))
+ 163   1                      {sd_ztxh=5;     tuya_DataTab[6]=0x55;/*·ÀÖ¹ÖØ¸´´ð¸´//*/ }                                       //wifiÁ¬Íø×´Ì¬ÎªAPÅäÍø
+ 164   1              if((tuya_DataTab[0]==0x55)&&(tuya_DataTab[1]==0xaa)&&(tuya_DataTab[2]==0x00)&&(tuya_DataTab[3]==0x03)&&
+ 165   1              (tuya_DataTab[4]==0x00)&&(tuya_DataTab[5]==0x01)&&(tuya_DataTab[6]==0x02)&&(tuya_DataTab[7]==0x05))
+ 166   1                      {sd_ztxh=6;     tuya_DataTab[6]=0x55;/*·ÀÖ¹ÖØ¸´´ð¸´//*/ }                                       //wifÅäÍø³É¹¦µ«Î´Á¬ÉÏÂ·ÓÉÆ÷     
+ 167   1              if((tuya_DataTab[0]==0x55)&&(tuya_DataTab[1]==0xaa)&&(tuya_DataTab[2]==0x00)&&(tuya_DataTab[3]==0x03)&&
+C51 COMPILER V9.01   TUYA                                                                  02/22/2021 14:14:38 PAGE 4   
+
+ 168   1              (tuya_DataTab[4]==0x00)&&(tuya_DataTab[5]==0x01)&&(tuya_DataTab[6]==0x03)&&(tuya_DataTab[7]==0x06))
+ 169   1                      {sd_ztxh=7;     tuya_DataTab[6]=0x55;/*·ÀÖ¹ÖØ¸´´ð¸´//*/ }                                       //ÒÑÁ¬ÉÏÂ·ÓÉÆ÷  
+ 170   1              if((tuya_DataTab[0]==0x55)&&(tuya_DataTab[1]==0xaa)&&(tuya_DataTab[2]==0x00)&&(tuya_DataTab[3]==0x03)&&
+ 171   1              (tuya_DataTab[4]==0x00)&&(tuya_DataTab[5]==0x01)&&(tuya_DataTab[6]==0x04)&&(tuya_DataTab[7]==0x07))
+ 172   1                      {sd_ztxh=8;     tuya_DataTab[6]=0x55;/*·ÀÖ¹ÖØ¸´´ð¸´//*/ }                                       //ÒÑÁ¬ÉÏÂ·ÓÉÆ÷ÇÒÁ¬½Óµ½ÔÆ¶Ë
+ 173   1              
+ 174   1              
+ 175   1                                        
+ 176   1      
+ 177   1              return  sd_ztxh;  //·µ»ØÊÕµ½µÄ×´Ì¬ÐòºÅ
+ 178   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1070    ----
+   CONSTANT SIZE    =    116    ----
+   XDATA SIZE       =      6     111
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

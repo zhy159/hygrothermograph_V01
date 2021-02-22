@@ -1,0 +1,93 @@
+C51 COMPILER V9.01   MULTIPLICATION_DIVISION                                               01/28/2021 14:57:39 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MULTIPLICATION_DIVISION
+OBJECT MODULE PLACED IN .\Objects\Multiplication_Division.obj
+COMPILER INVOKED BY: D:\Program Files\keil 4\C51\BIN\C51.EXE c\Multiplication_Division.c BROWSE DEBUG OBJECTEXTEND PRINT
+                    -(.\Listings\Multiplication_Division.lst) OBJECT(.\Objects\Multiplication_Division.obj)
+
+line level    source
+
+   1          #include "H/Function_Init.H"
+   2          
+   3          u32 product = 0;//乘积
+   4          u32 quotient = 0;//商
+   5          u16 remainder = 0;//余数
+   6          Result_union result;
+   7          
+   8          /****************************************************
+   9          *函数名称：Multiplication(u16 faciend, u16 Multiplier)
+  10          *函数功能：乘法运算
+  11          *入口参数：faciend，Multiplier
+  12          *出口参数：无
+  13          ****************************************************/
+  14          void Multiplication(u16 faciend, u16 Multiplier)
+  15          {
+  16   1          OPERCON &= ~0x40;   //选择乘法
+  17   1          
+  18   1              EXA0 = faciend;
+  19   1              EXA1 = faciend>>8;
+  20   1              EXBL = Multiplier;
+  21   1              EXBH = Multiplier>>8;
+  22   1      
+  23   1              OPERCON |= 0x80;      //开始计算
+  24   1              while(OPERCON & 0x80);
+  25   1      
+  26   1              result.reg.a0 = EXA0;
+  27   1              result.reg.a1 = EXA1;
+  28   1              result.reg.a2 = EXA2;
+  29   1              result.reg.a3 = EXA3;
+  30   1      
+  31   1              product = result.Result;
+  32   1      }       
+  33          
+  34          /****************************************************
+  35          *函数名称：Division(u32 dividend,u16 divisor)
+  36          *函数功能：除法运算
+  37          *入口参数：dividend，divisor
+  38          *出口参数：无
+  39          ****************************************************/
+  40          void Division(u32 dividend,u16 divisor)
+  41          {
+  42   1              Result_union temp;
+  43   1              temp.Result = dividend;
+  44   1      
+  45   1          OPERCON &= ~0x40;
+  46   1          OPERCON |= 0x40;    //选择除法
+  47   1          
+  48   1              EXA0 = temp.reg.a0;
+  49   1              EXA1 = temp.reg.a1;
+  50   1              EXA2 = temp.reg.a2;
+  51   1              EXA3 = temp.reg.a3;
+  52   1      
+  53   1              EXBL = divisor;
+  54   1              EXBH = divisor>>8;
+C51 COMPILER V9.01   MULTIPLICATION_DIVISION                                               01/28/2021 14:57:39 PAGE 2   
+
+  55   1      
+  56   1              OPERCON |= 0xC0;
+  57   1              while(OPERCON & 0x80);
+  58   1      
+  59   1              result.reg.a0 = EXA0;
+  60   1              result.reg.a1 = EXA1;
+  61   1              result.reg.a2 = EXA2;
+  62   1              result.reg.a3 = EXA3;
+  63   1      
+  64   1              remainder = EXBH*256+ EXBL;
+  65   1              quotient  = result.Result;
+  66   1      }
+  67          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    134    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     14      10
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
